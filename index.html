@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Online chat</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+  <div id="chatbox"></div>
+  <input id="input" type="text" placeholder="輸入完後按下Enter">
+
+  <script>
+    var socket = io();
+    var name = prompt('請輸入用戶名：');
+    var text = '加入聊天室';
+    var time = new Date();
+    time = time.toLocaleTimeString();
+    var r = Math.random() * 255;
+    var g = Math.random() * 255;
+    var b = Math.random() * 255;
+    var color = `rgb(${r}, ${g}, ${b})`;
+
+    // 登入時先發送一次廣播訊息
+    socket.emit('message', [text, name, time, color]);
+
+    // 在輸入框按下 enter 鍵後送出廣播訊息
+    $('#input').keypress((evt) => {
+      var text = $('#input').val();
+      var time = new Date();
+      time = time.toLocaleTimeString();
+
+      if (evt.keyCode === 13 && text !== '') {
+        $('#input').val('');
+        socket.emit('message', [text, name, time, color]); // 發送廣播訊息
+        setCookie('user_name', name);
+      }
+    });
+
+    // 將留言更新到聊天室上
+    const appendComment = (text, name, time, color) => {
+      var html = `<p style="color: ${color};">【${name} ${time}】 ${text}</p>`;
+      $('#chatbox').append(html);
+
+      var height = $('#chatbox').prop('scrollHeight');
+      $('#chatbox').scrollTop(height);
+    }
+
+    // 接受到廣播訊息後，更新留言
+    socket.on('message' , (data) => {
+      appendComment(data[0], data[1], data[2], data[3]);
+    });
+  </script>
+
+</body>
+</html>
