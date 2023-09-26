@@ -2,15 +2,13 @@
 
 var express = require('express');
 
-var path = require('path');
-
 var app = express();
 
-var http = require('http');
+var path = require('path');
 
-var server = http.createServer(app);
+var server = require('http').createServer(app);
 
-var _require = require("socket.io"),
+var _require = require('socket.io'),
     Server = _require.Server;
 
 var io = new Server(server);
