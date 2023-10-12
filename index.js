@@ -9,7 +9,7 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/public', express.static('public'));
 
 server.listen(4000, () => {
   console.log('Server Started. Listening http://localhost:4000');
@@ -23,12 +23,13 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
     onlineCount = (onlineCount < 0) ? 0 : onlineCount -= 1;
-    console.log('user disconnected', onlineCount, 'online');
+    console.log('user disconnected.', onlineCount, 'online');
   });
 
-  socket.on('message' , (msg) => {
-    io.emit('message', msg);
-  });
+  socket.on('myMessage' , (msg) => {
+    io.emit('allMessage', msg);
+    // console.log(msg)
+    });
 });
 
 

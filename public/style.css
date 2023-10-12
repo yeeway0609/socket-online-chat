@@ -1,14 +1,13 @@
 body {
   padding: 30px;
-  background-color: #222222;
+  background-color: #5eb9f1;
   font-family: Monospace;
 }
 
 #chatbox {
-  /* height: 500px; */
   height: 80svh;
   padding: 5px;
-  border: 1px solid #bbbbbb;
+  border: 1px solid #000000;
   overflow-y: scroll;
 }
 
@@ -21,11 +20,11 @@ body {
 input {
   width: 100%;
   padding: 10px 10px;
-  border: 1px solid #bbbbbb;
+  border: 1px solid #000000;
   border-top-width: 0;
   box-sizing: border-box;
   color: #bbbbbb;
-  background-color: #222222;
+  background-color: #ffffff;
   outline: none;
   font-family: Monospace;
   font-size: 1rem;

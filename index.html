@@ -3,13 +3,13 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Online chat</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="public/style.css">
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
   <div id="chatbox"></div>
-  <input id="input" type="text" placeholder="輸入完後按下Enter">
+  <input id="input" type="text" placeholder="按下Enter送出訊息...">
 
   <script>
     var socket = io();
@@ -23,7 +23,7 @@
     var color = `rgb(${r}, ${g}, ${b})`;
 
     // 登入時先發送一次廣播訊息
-    socket.emit('message', [text, name, time, color]);
+    socket.emit('myMessage', [text, name, time, color]);
 
     // 在輸入框按下 enter 鍵後送出廣播訊息
     $('#input').keypress((evt) => {
@@ -33,8 +33,8 @@
 
       if (evt.keyCode === 13 && text !== '') {
         $('#input').val('');
-        socket.emit('message', [text, name, time, color]); // 發送廣播訊息
-        setCookie('user_name', name);
+        socket.emit('myMessage', [text, name, time, color]); // 發送廣播訊息
+        // setCookie('user_name', name);
       }
     });
 
@@ -48,7 +48,7 @@
     }
 
     // 接受到廣播訊息後，更新留言
-    socket.on('message' , (data) => {
+    socket.on('allMessage' , (data) => {
       appendComment(data[0], data[1], data[2], data[3]);
     });
   </script>
